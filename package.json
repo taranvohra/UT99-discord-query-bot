@@ -1,0 +1,9 @@
+{
+  "name": "UT99 Query Bot",
+  "version": "0.1.1",
+  "author": "Taran Vohra",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
