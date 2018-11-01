@@ -12,7 +12,6 @@ export const queryUT99Server = async args => {
   const response = await API.getUT99ServerStatus(host, parseInt(port) + 1);
   const splittedResponse = response.split('\\');
   const filteredResult = filterFalsyValues(splittedResponse);
-
   const result = filteredResult.reduce(
     (acc, curr) => {
       if (curr === 'player_0') acc.pFlag = true;
@@ -27,6 +26,6 @@ export const queryUT99Server = async args => {
   );
   return {
     info: { ...createObjectFromArray(result.info), host, port },
-    players: result.players,
+    players: createObjectFromArray(result.players),
   };
 };

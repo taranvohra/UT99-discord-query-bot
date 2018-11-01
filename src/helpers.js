@@ -1,3 +1,5 @@
+import { teams } from './constants';
+
 /**
  * @param {String} packet
  * @description Checks whether the packet is the last packet
@@ -26,4 +28,31 @@ export const createObjectFromArray = array => {
     if (index % 2 === 0) acc[item] = arr[index + 1];
     return acc;
   }, {});
+};
+
+export const getPlayersFromList = (players, noOfPlayers, noOfTeams) => {
+  let playerList = {
+    [teams.team_0]: [],
+    [teams.team_1]: [],
+    [teams.team_2]: [],
+    [teams.team_3]: [],
+    [teams.team_255]: [],
+    [teams.spec]: [],
+  };
+
+  for (let i = 0; i < noOfPlayers; i++) {
+    const playerName = players[`player_${i}`];
+    if (players[`mesh_${i}`] === 'Spectator') {
+      playerList[teams.spec].push(playerName);
+      i++;
+      continue;
+    }
+
+    if (noOfTeams > 0) {
+      const team = parseInt(players[`team_${i}`]);
+      playerList[Object.values(teams)[team]].push(playerName);
+    } else playerList[teams.team_255].push(playerName);
+  }
+
+  return playerList;
 };

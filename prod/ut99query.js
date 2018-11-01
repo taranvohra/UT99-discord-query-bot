@@ -62,7 +62,7 @@ var queryUT99Server = exports.queryUT99Server = function () {
             });
             return _context.abrupt('return', {
               info: (0, _extends3.default)({}, (0, _helpers.createObjectFromArray)(result.info), { host: host, port: port }),
-              players: result.players
+              players: (0, _helpers.createObjectFromArray)(result.players)
             });
 
           case 8:

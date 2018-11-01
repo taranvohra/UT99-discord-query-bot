@@ -47,7 +47,7 @@ var API = function () {
           });
 
           socket.on('message', function (message, remote) {
-            status = status.concat(message.toString());
+            status += message.toString();
             if ((0, _helpers.checkIfFinalPacket)(message.toString())) {
               resolve(status);
               return socket.close();

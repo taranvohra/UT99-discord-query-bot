@@ -8,8 +8,10 @@ export const commands = {
 };
 
 export const teams = {
-  0: 'Red Team',
-  1: 'Blue Team',
-  2: 'Green Team',
-  3: 'Gold Team',
+  team_0: 'Red Team',
+  team_1: 'Blue Team',
+  team_2: 'Green Team',
+  team_3: 'Gold Team',
+  team_255: 'None',
+  spec: 'Spectators',
 };

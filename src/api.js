@@ -15,7 +15,7 @@ export default class API {
         });
 
         socket.on('message', (message, remote) => {
-          status = status.concat(message.toString());
+          status += message.toString();
           if (checkIfFinalPacket(message.toString())) {
             resolve(status);
             return socket.close();
