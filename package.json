@@ -1,9 +1,21 @@
 {
-  "name": "UT99 Query Bot",
+  "name": "ut99-query-bot",
   "version": "0.1.1",
   "author": "Taran Vohra",
+  "scripts": {
+    "build": "babel src -d prod/",
+    "start": "npm run build && node prod/bot.js"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2017": "^6.24.1"
+  },
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "firebase": "^5.5.6"
   }
 }
