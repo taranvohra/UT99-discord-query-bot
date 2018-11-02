@@ -1,14 +1,14 @@
 import Discord from 'discord.js';
-import { getPlayersFromList } from './helpers';
+import { getPlayerList } from './helpers';
 import { teams } from './constants';
 
 export const printServerStatus = ({ info, players }) => {
   let richEmbed = new Discord.RichEmbed();
-  let desc = `**Map:** ${info.mapname} \n **Players:** ${info.numplayers}/${
+  const desc = `**Map:** ${info.mapname} \n **Players:** ${info.numplayers}/${
     info.maxplayers
   } `;
 
-  const playerList = getPlayersFromList(
+  const playerList = getPlayerList(
     players,
     parseInt(info.numplayers) || 0,
     !!info.maxteams
@@ -25,8 +25,30 @@ export const printServerStatus = ({ info, players }) => {
       : '';
   });
 
+  const footerText = `unreal://${info.host}:${info.port}`;
+
   richEmbed.setTitle(info.hostname);
   richEmbed.setColor('#838282');
   richEmbed.setDescription(desc);
+  richEmbed.setFooter(footerText);
+  return richEmbed;
+};
+
+export const printServerList = cachedDB => {
+  let richEmbed = new Discord.RichEmbed();
+  const { desc } = Object.keys(cachedDB).reduce(
+    (acc, curr, index) => {
+      acc.desc += `${index + 1}\u00A0\u00A0\u00A0${cachedDB[curr].name}\n`;
+      return acc;
+    },
+    {
+      desc: '',
+    }
+  );
+
+  richEmbed.setTitle('IP Name');
+  richEmbed.setColor('#838282');
+  richEmbed.setDescription(desc);
+  richEmbed.setFooter('To query, type .q ip');
   return richEmbed;
 };

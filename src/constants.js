@@ -5,6 +5,7 @@ export const commands = {
   delqueryserver: 'delqueryserver',
   updatequeryserver: 'updatequeryserver',
   queryut99server: 'q',
+  servers: 'servers',
 };
 
 export const teams = {

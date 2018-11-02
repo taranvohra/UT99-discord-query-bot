@@ -27,11 +27,19 @@ export default class API {
     });
   }
 
-  static getObjectFromDB() {
-    db.ref('/')
-      .once('value')
-      .then(function(value) {
-        console.log(value.val());
-      });
+  static async getCopyOfDB() {
+    const snapshot = await db.ref('/').once('value');
+    return snapshot.val().Servers;
+  }
+
+  static async updateDB(snapshot) {
+    try {
+      await db.ref('/Servers').set(snapshot);
+      const cache = await API.getCopyOfDB();
+      return { status: true, cache, msg: 'Query server added' };
+    } catch (e) {
+      console.log('updateDB Error ', e);
+      return { status: false, msg: 'Something went wrong' };
+    }
   }
 }

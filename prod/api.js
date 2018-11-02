@@ -4,6 +4,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -59,12 +67,77 @@ var API = function () {
       });
     }
   }, {
-    key: 'getObjectFromDB',
-    value: function getObjectFromDB() {
-      _db2.default.ref('/').once('value').then(function (value) {
-        console.log(value.val());
-      });
-    }
+    key: 'getCopyOfDB',
+    value: function () {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+        var snapshot;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _db2.default.ref('/').once('value');
+
+              case 2:
+                snapshot = _context.sent;
+                return _context.abrupt('return', snapshot.val().Servers);
+
+              case 4:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getCopyOfDB() {
+        return _ref.apply(this, arguments);
+      }
+
+      return getCopyOfDB;
+    }()
+  }, {
+    key: 'updateDB',
+    value: function () {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(snapshot) {
+        var cache;
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return _db2.default.ref('/Servers').set(snapshot);
+
+              case 3:
+                _context2.next = 5;
+                return API.getCopyOfDB();
+
+              case 5:
+                cache = _context2.sent;
+                return _context2.abrupt('return', { status: true, cache: cache, msg: 'Query server added' });
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2['catch'](0);
+
+                console.log('updateDB Error ', _context2.t0);
+                return _context2.abrupt('return', { status: false, msg: 'Something went wrong' });
+
+              case 13:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 9]]);
+      }));
+
+      function updateDB(_x) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return updateDB;
+    }()
   }]);
   return API;
 }();

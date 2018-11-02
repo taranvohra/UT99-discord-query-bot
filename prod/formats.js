@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.printServerStatus = undefined;
+exports.printServerList = exports.printServerStatus = undefined;
 
 var _keys = require('babel-runtime/core-js/object/keys');
 
@@ -26,7 +26,7 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
   var richEmbed = new _discord2.default.RichEmbed();
   var desc = '**Map:** ' + info.mapname + ' \n **Players:** ' + info.numplayers + '/' + info.maxplayers + ' ';
 
-  var playerList = (0, _helpers.getPlayersFromList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
+  var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
 
   (0, _keys2.default)(playerList).forEach(function (team) {
     var p = playerList[team];
@@ -37,8 +37,29 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
     p.length > 0 ? richEmbed.addField(team, teamPlayers, team !== _constants.teams.spec) : '';
   });
 
+  var footerText = 'unreal://' + info.host + ':' + info.port;
+
   richEmbed.setTitle(info.hostname);
   richEmbed.setColor('#838282');
   richEmbed.setDescription(desc);
+  richEmbed.setFooter(footerText);
+  return richEmbed;
+};
+
+var printServerList = exports.printServerList = function printServerList(cachedDB) {
+  var richEmbed = new _discord2.default.RichEmbed();
+
+  var _Object$keys$reduce = (0, _keys2.default)(cachedDB).reduce(function (acc, curr, index) {
+    acc.desc += index + 1 + '\xA0\xA0\xA0' + cachedDB[curr].name + '\n';
+    return acc;
+  }, {
+    desc: ''
+  }),
+      desc = _Object$keys$reduce.desc;
+
+  richEmbed.setTitle('IP Name');
+  richEmbed.setColor('#838282');
+  richEmbed.setDescription(desc);
+  richEmbed.setFooter('To query, type .q ip');
   return richEmbed;
 };

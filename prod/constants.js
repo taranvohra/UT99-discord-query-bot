@@ -9,7 +9,8 @@ var commands = exports.commands = {
   addqueryserver: 'addqueryserver',
   delqueryserver: 'delqueryserver',
   updatequeryserver: 'updatequeryserver',
-  queryut99server: 'q'
+  queryut99server: 'q',
+  servers: 'servers'
 };
 
 var teams = exports.teams = {

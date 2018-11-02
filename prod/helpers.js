@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPlayersFromList = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
+exports.getPlayerList = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
 
 var _values = require('babel-runtime/core-js/object/values');
 
@@ -12,6 +12,10 @@ var _values2 = _interopRequireDefault(_values);
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
 
 var _constants = require('./constants');
 
@@ -51,7 +55,22 @@ var createObjectFromArray = exports.createObjectFromArray = function createObjec
   }, {});
 };
 
-var getPlayersFromList = exports.getPlayersFromList = function getPlayersFromList(players, noOfPlayers, noOfTeams) {
+var checkKeyExistenceFromIndex = exports.checkKeyExistenceFromIndex = function checkKeyExistenceFromIndex(object, index) {
+  return !!(0, _keys2.default)(object)[index - 1];
+};
+
+var getHostAndPortOfServerFromDB = exports.getHostAndPortOfServerFromDB = function getHostAndPortOfServerFromDB(cachedDB, index) {
+  var server = (0, _keys2.default)(cachedDB)[index - 1];
+  return [cachedDB[server].host, cachedDB[server].port];
+};
+
+/**
+ *
+ * @param {Object} players
+ * @param {Number} noOfPlayers
+ * @param {Number} noOfTeams
+ */
+var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOfPlayers, noOfTeams) {
   var _playerList;
 
   var playerList = (_playerList = {}, (0, _defineProperty3.default)(_playerList, _constants.teams.team_0, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_1, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_2, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_3, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_255, []), (0, _defineProperty3.default)(_playerList, _constants.teams.spec, []), _playerList);
