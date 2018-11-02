@@ -51,24 +51,28 @@ export const queryUT99Server = async (args, cachedDB) => {
 
   if (!host || !port) return { status: false, msg: 'Invalid' };
 
-  const response = await API.getUT99ServerStatus(host, parseInt(port) + 1);
-  const splittedResponse = response.split('\\');
-  const filteredResult = filterFalsyValues(splittedResponse);
-  const result = filteredResult.reduce(
-    (acc, curr) => {
-      if (curr === 'player_0') acc.pFlag = true;
-      acc.pFlag ? acc.players.push(curr) : acc.info.push(curr);
-      return acc;
-    },
-    {
-      info: [],
-      players: [],
-      pFlag: false,
-    }
-  );
-  return {
-    status: true,
-    info: { ...createObjectFromArray(result.info), host, port },
-    players: createObjectFromArray(result.players),
-  };
+  try {
+    const response = await API.getUT99ServerStatus(host, parseInt(port) + 1);
+    const splittedResponse = response.split('\\');
+    const filteredResult = filterFalsyValues(splittedResponse);
+    const result = filteredResult.reduce(
+      (acc, curr) => {
+        if (curr === 'player_0') acc.pFlag = true;
+        acc.pFlag ? acc.players.push(curr) : acc.info.push(curr);
+        return acc;
+      },
+      {
+        info: [],
+        players: [],
+        pFlag: false,
+      }
+    );
+    return {
+      status: true,
+      info: { ...createObjectFromArray(result.info), host, port },
+      players: createObjectFromArray(result.players),
+    };
+  } catch (error) {
+    return { status: false, msg: `Could not query` };
+  }
 };

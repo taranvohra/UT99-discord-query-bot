@@ -11,7 +11,7 @@ export default class API {
         const datagram = '\\status\\';
 
         socket.send(datagram, port, host, err => {
-          if (err) throw err;
+          if (err) reject(err);
         });
 
         socket.on('message', (message, remote) => {

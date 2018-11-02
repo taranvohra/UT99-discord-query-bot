@@ -51,7 +51,7 @@ var API = function () {
           var datagram = '\\status\\';
 
           socket.send(datagram, port, host, function (err) {
-            if (err) throw err;
+            if (err) reject(err);
           });
 
           socket.on('message', function (message, remote) {

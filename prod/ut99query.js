@@ -136,10 +136,11 @@ var queryUT99Server = exports.queryUT99Server = function () {
             return _context2.abrupt('return', { status: false, msg: 'Invalid' });
 
           case 3:
-            _context2.next = 5;
+            _context2.prev = 3;
+            _context2.next = 6;
             return _api2.default.getUT99ServerStatus(host, parseInt(port) + 1);
 
-          case 5:
+          case 6:
             response = _context2.sent;
             splittedResponse = response.split('\\');
             filteredResult = (0, _helpers.filterFalsyValues)(splittedResponse);
@@ -158,12 +159,17 @@ var queryUT99Server = exports.queryUT99Server = function () {
               players: (0, _helpers.createObjectFromArray)(result.players)
             });
 
-          case 10:
+          case 13:
+            _context2.prev = 13;
+            _context2.t0 = _context2['catch'](3);
+            return _context2.abrupt('return', { status: false, msg: 'Could not query' });
+
+          case 16:
           case 'end':
             return _context2.stop();
         }
       }
-    }, _callee2, undefined);
+    }, _callee2, undefined, [[3, 13]]);
   }));
 
   return function queryUT99Server(_x3, _x4) {
