@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPlayerList = exports.createSortedDBSnapshot = exports.getUIDFromIndex = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
+exports.getPlayerList = exports.checkIfRoleIsPrivileged = exports.createSortedDBSnapshot = exports.getUIDFromIndex = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
 
 var _values = require('babel-runtime/core-js/object/values');
 
@@ -55,18 +55,37 @@ var createObjectFromArray = exports.createObjectFromArray = function createObjec
   }, {});
 };
 
+/**
+ * @param {Object} cachedDB
+ * @param {Number} index
+ * @description Checks if Key exists
+ */
 var checkKeyExistenceFromIndex = exports.checkKeyExistenceFromIndex = function checkKeyExistenceFromIndex(cachedDB, index) {
   return !!cachedDB[index - 1];
 };
 
+/**
+ * @param {Object} cachedDB
+ * @param {Number} index
+ * @description Obtains Host and Port of a server from cache
+ */
 var getHostAndPortOfServerFromDB = exports.getHostAndPortOfServerFromDB = function getHostAndPortOfServerFromDB(cachedDB, index) {
   return [cachedDB[index - 1].host, cachedDB[index - 1].port];
 };
 
+/**
+ * @param {Object} cachedDB
+ * @param {Number} index
+ * @description Obtains UID of a server from cache
+ */
 var getUIDFromIndex = exports.getUIDFromIndex = function getUIDFromIndex(cachedDB, index) {
   return cachedDB.length > 0 && cachedDB[index - 1].id || undefined;
 };
 
+/**
+ * @param {Object} snapshot
+ * @description returns a cache of sorted servers
+ */
 var createSortedDBSnapshot = exports.createSortedDBSnapshot = function createSortedDBSnapshot(snapshot) {
   var sortedSnapshot = [];
   snapshot.forEach(function (child) {
@@ -75,8 +94,15 @@ var createSortedDBSnapshot = exports.createSortedDBSnapshot = function createSor
   return sortedSnapshot;
 };
 
+var checkIfRoleIsPrivileged = exports.checkIfRoleIsPrivileged = function checkIfRoleIsPrivileged(roles) {
+  return _constants.privilegedRoles.some(function (r) {
+    return roles.find(function (x) {
+      return x.name === r;
+    });
+  });
+};
+
 /**
- *
  * @param {Object} players
  * @param {Number} noOfPlayers
  * @param {Number} noOfTeams

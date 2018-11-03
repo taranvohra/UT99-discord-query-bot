@@ -1,4 +1,4 @@
-import { teams } from './constants';
+import { teams, privilegedRoles } from './constants';
 
 /**
  * @param {String} packet
@@ -30,17 +30,36 @@ export const createObjectFromArray = array => {
   }, {});
 };
 
+/**
+ * @param {Object} cachedDB
+ * @param {Number} index
+ * @description Checks if Key exists
+ */
 export const checkKeyExistenceFromIndex = (cachedDB, index) =>
   !!cachedDB[index - 1];
 
+/**
+ * @param {Object} cachedDB
+ * @param {Number} index
+ * @description Obtains Host and Port of a server from cache
+ */
 export const getHostAndPortOfServerFromDB = (cachedDB, index) => [
   cachedDB[index - 1].host,
   cachedDB[index - 1].port,
 ];
 
+/**
+ * @param {Object} cachedDB
+ * @param {Number} index
+ * @description Obtains UID of a server from cache
+ */
 export const getUIDFromIndex = (cachedDB, index) =>
   (cachedDB.length > 0 && cachedDB[index - 1].id) || undefined;
 
+/**
+ * @param {Object} snapshot
+ * @description returns a cache of sorted servers
+ */
 export const createSortedDBSnapshot = snapshot => {
   let sortedSnapshot = [];
   snapshot.forEach(child => {
@@ -49,8 +68,10 @@ export const createSortedDBSnapshot = snapshot => {
   return sortedSnapshot;
 };
 
+export const checkIfRoleIsPrivileged = roles =>
+  privilegedRoles.some(r => roles.find(x => x.name === r));
+
 /**
- *
  * @param {Object} players
  * @param {Number} noOfPlayers
  * @param {Number} noOfTeams

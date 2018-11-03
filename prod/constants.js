@@ -21,3 +21,5 @@ var teams = exports.teams = {
   team_255: 'None',
   spec: 'Spectators'
 };
+
+var privilegedRoles = exports.privilegedRoles = ['Admins', 'Moderators'];

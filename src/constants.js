@@ -16,3 +16,5 @@ export const teams = {
   team_255: 'None',
   spec: 'Spectators',
 };
+
+export const privilegedRoles = ['Admins', 'Moderators'];

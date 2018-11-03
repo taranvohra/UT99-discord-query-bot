@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { prefix, commands } from './constants';
 import { addQueryServer, queryUT99Server, delQueryServer } from './ut99query';
 import { printServerStatus, printServerList } from './formats';
+import { checkIfRoleIsPrivileged } from './helpers';
 import API from './api';
 
 dotenv.config();
@@ -19,6 +20,7 @@ bot.on('message', async message => {
   if (!message.content.startsWith(prefix)) return;
 
   const args = message.content.substring(prefix.length).split(' ');
+  const roles = message.member.roles;
 
   switch (args[0]) {
     case commands.servers: {
@@ -28,21 +30,21 @@ bot.on('message', async message => {
       break;
     }
 
-    case commands.addqueryserver: {
+    case checkIfRoleIsPrivileged(roles) && commands.addqueryserver: {
       const result = await addQueryServer(args, cachedDB);
       result.status ? updateCache(result.cache) : '';
       message.channel.send(result.msg);
       break;
     }
 
-    case commands.delqueryserver: {
+    case checkIfRoleIsPrivileged(roles) && commands.delqueryserver: {
       const result = await delQueryServer(args, cachedDB);
       result.status ? updateCache(result.cache) : '';
       message.channel.send(result.msg);
       break;
     }
 
-    case commands.updatequeryserver:
+    case checkIfRoleIsPrivileged(roles) && commands.updatequeryserver:
       console.log(args[0]);
       break;
 
