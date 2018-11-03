@@ -1,6 +1,6 @@
 import dgram from 'dgram';
 import db from './db';
-import { checkIfFinalPacket } from './helpers';
+import { checkIfFinalPacket, createSortedDBSnapshot } from './helpers';
 
 export default class API {
   static getUT99ServerStatus(host, port) {
@@ -28,17 +28,31 @@ export default class API {
   }
 
   static async getCopyOfDB() {
-    const snapshot = await db.ref('/').once('value');
-    return snapshot.val().Servers;
+    const snapshot = await db
+      .ref('/Servers')
+      .orderByChild('timestamp')
+      .once('value');
+    return createSortedDBSnapshot(snapshot);
   }
 
-  static async updateDB(snapshot) {
+  static async pushToDB(id, payload) {
     try {
-      await db.ref('/Servers').set(snapshot);
+      await db.ref(`/Servers/${id}`).set(payload);
       const cache = await API.getCopyOfDB();
       return { status: true, cache, msg: 'Query server added' };
-    } catch (e) {
-      console.log('updateDB Error ', e);
+    } catch (error) {
+      console.log('pushToDB Error ', e);
+      return { status: false, msg: 'Something went wrong' };
+    }
+  }
+
+  static async deleteFromDB(id) {
+    try {
+      await db.ref(`/Servers/${id}`).remove();
+      const cache = await API.getCopyOfDB();
+      return { status: true, cache, msg: 'Query server removed' };
+    } catch (error) {
+      console.log('deleteFromDB Error ', e);
       return { status: false, msg: 'Something went wrong' };
     }
   }

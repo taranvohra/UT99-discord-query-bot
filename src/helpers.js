@@ -30,12 +30,23 @@ export const createObjectFromArray = array => {
   }, {});
 };
 
-export const checkKeyExistenceFromIndex = (object, index) =>
-  !!Object.keys(object)[index - 1];
+export const checkKeyExistenceFromIndex = (cachedDB, index) =>
+  !!cachedDB[index - 1];
 
-export const getHostAndPortOfServerFromDB = (cachedDB, index) => {
-  const server = Object.keys(cachedDB)[index - 1];
-  return [cachedDB[server].host, cachedDB[server].port];
+export const getHostAndPortOfServerFromDB = (cachedDB, index) => [
+  cachedDB[index - 1].host,
+  cachedDB[index - 1].port,
+];
+
+export const getUIDFromIndex = (cachedDB, index) =>
+  (cachedDB.length > 0 && cachedDB[index - 1].id) || undefined;
+
+export const createSortedDBSnapshot = snapshot => {
+  let sortedSnapshot = [];
+  snapshot.forEach(child => {
+    sortedSnapshot.push({ id: child.key, ...child.val() });
+  });
+  return sortedSnapshot;
 };
 
 /**

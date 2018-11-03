@@ -76,11 +76,11 @@ var API = function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _db2.default.ref('/').once('value');
+                return _db2.default.ref('/Servers').orderByChild('timestamp').once('value');
 
               case 2:
                 snapshot = _context.sent;
-                return _context.abrupt('return', snapshot.val().Servers);
+                return _context.abrupt('return', (0, _helpers.createSortedDBSnapshot)(snapshot));
 
               case 4:
               case 'end':
@@ -97,9 +97,9 @@ var API = function () {
       return getCopyOfDB;
     }()
   }, {
-    key: 'updateDB',
+    key: 'pushToDB',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(snapshot) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(id, payload) {
         var cache;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -107,7 +107,7 @@ var API = function () {
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
-                return _db2.default.ref('/Servers').set(snapshot);
+                return _db2.default.ref('/Servers/' + id).set(payload);
 
               case 3:
                 _context2.next = 5;
@@ -121,7 +121,7 @@ var API = function () {
                 _context2.prev = 9;
                 _context2.t0 = _context2['catch'](0);
 
-                console.log('updateDB Error ', _context2.t0);
+                console.log('pushToDB Error ', e);
                 return _context2.abrupt('return', { status: false, msg: 'Something went wrong' });
 
               case 13:
@@ -132,11 +132,53 @@ var API = function () {
         }, _callee2, this, [[0, 9]]);
       }));
 
-      function updateDB(_x) {
+      function pushToDB(_x, _x2) {
         return _ref2.apply(this, arguments);
       }
 
-      return updateDB;
+      return pushToDB;
+    }()
+  }, {
+    key: 'deleteFromDB',
+    value: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(id) {
+        var cache;
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _db2.default.ref('/Servers/' + id).remove();
+
+              case 3:
+                _context3.next = 5;
+                return API.getCopyOfDB();
+
+              case 5:
+                cache = _context3.sent;
+                return _context3.abrupt('return', { status: true, cache: cache, msg: 'Query server removed' });
+
+              case 9:
+                _context3.prev = 9;
+                _context3.t0 = _context3['catch'](0);
+
+                console.log('deleteFromDB Error ', e);
+                return _context3.abrupt('return', { status: false, msg: 'Something went wrong' });
+
+              case 13:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 9]]);
+      }));
+
+      function deleteFromDB(_x3) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return deleteFromDB;
     }()
   }]);
   return API;

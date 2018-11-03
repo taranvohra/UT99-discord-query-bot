@@ -36,9 +36,10 @@ export const printServerStatus = ({ info, players }) => {
 
 export const printServerList = cachedDB => {
   let richEmbed = new Discord.RichEmbed();
-  const { desc } = Object.keys(cachedDB).reduce(
+
+  const { desc } = cachedDB.reduce(
     (acc, curr, index) => {
-      acc.desc += `${index + 1}\u00A0\u00A0\u00A0${cachedDB[curr].name}\n`;
+      acc.desc += `\`${index + 1}\`\u00A0\u00A0\u00A0${curr.name}\n`;
       return acc;
     },
     {
@@ -46,7 +47,7 @@ export const printServerList = cachedDB => {
     }
   );
 
-  richEmbed.setTitle('IP Name');
+  richEmbed.setTitle(`IP\u00A0\u00A0\u00A0Name`);
   richEmbed.setColor('#838282');
   richEmbed.setDescription(desc);
   richEmbed.setFooter('To query, type .q ip');

@@ -1,9 +1,11 @@
 import { Client } from 'discord.js';
+import dotenv from 'dotenv';
 import { prefix, commands } from './constants';
-import { addQueryServer, queryUT99Server } from './ut99query';
+import { addQueryServer, queryUT99Server, delQueryServer } from './ut99query';
 import { printServerStatus, printServerList } from './formats';
 import API from './api';
 
+dotenv.config();
 let cachedDB = {};
 const disabledEvents = ['TYPING_START', 'CHANNEL_UPDATE', 'USER_UPDATE'];
 const bot = new Client({ disabledEvents });
@@ -33,9 +35,12 @@ bot.on('message', async message => {
       break;
     }
 
-    case commands.delqueryserver:
-      console.log(args[0]);
+    case commands.delqueryserver: {
+      const result = await delQueryServer(args, cachedDB);
+      result.status ? updateCache(result.cache) : '';
+      message.channel.send(result.msg);
       break;
+    }
 
     case commands.updatequeryserver:
       console.log(args[0]);
@@ -56,7 +61,7 @@ bot.on('message', async message => {
 
 (async () => {
   cachedDB = await API.getCopyOfDB();
-  bot.login('MzkzMzM1NDU3MDA3NjY1MTUy.DrsR6g.yb9uY50QHZ7s51f5dzI_G9snPvw');
+  bot.login(process.env.DISCORD_BOT_TOKEN);
 })();
 
 const updateCache = newCache => (cachedDB = newCache);

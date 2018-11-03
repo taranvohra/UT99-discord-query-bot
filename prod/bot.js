@@ -10,6 +10,10 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var _discord = require('discord.js');
 
+var _dotenv = require('dotenv');
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
+
 var _constants = require('./constants');
 
 var _ut99query = require('./ut99query');
@@ -22,6 +26,7 @@ var _api2 = _interopRequireDefault(_api);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_dotenv2.default.config();
 var cachedDB = {};
 var disabledEvents = ['TYPING_START', 'CHANNEL_UPDATE', 'USER_UPDATE'];
 var bot = new _discord.Client({ disabledEvents: disabledEvents });
@@ -32,7 +37,7 @@ bot.on('ready', function () {
 
 bot.on('message', function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(message) {
-    var args, result, _result;
+    var args, result, _result, _result2;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -56,12 +61,12 @@ bot.on('message', function () {
           case 4:
             args = message.content.substring(_constants.prefix.length).split(' ');
             _context.t0 = args[0];
-            _context.next = _context.t0 === _constants.commands.servers ? 8 : _context.t0 === _constants.commands.addqueryserver ? 10 : _context.t0 === _constants.commands.delqueryserver ? 16 : _context.t0 === _constants.commands.updatequeryserver ? 18 : _context.t0 === _constants.commands.queryut99server ? 20 : 25;
+            _context.next = _context.t0 === _constants.commands.servers ? 8 : _context.t0 === _constants.commands.addqueryserver ? 10 : _context.t0 === _constants.commands.delqueryserver ? 16 : _context.t0 === _constants.commands.updatequeryserver ? 22 : _context.t0 === _constants.commands.queryut99server ? 24 : 29;
             break;
 
           case 8:
             message.channel.send((0, _formats.printServerList)(cachedDB)).catch(console.error + ':list:');
-            return _context.abrupt('break', 26);
+            return _context.abrupt('break', 30);
 
           case 10:
             _context.next = 12;
@@ -72,30 +77,37 @@ bot.on('message', function () {
 
             result.status ? updateCache(result.cache) : '';
             message.channel.send(result.msg);
-            return _context.abrupt('break', 26);
+            return _context.abrupt('break', 30);
 
           case 16:
-            console.log(args[0]);
-            return _context.abrupt('break', 26);
+            _context.next = 18;
+            return (0, _ut99query.delQueryServer)(args, cachedDB);
 
           case 18:
-            console.log(args[0]);
-            return _context.abrupt('break', 26);
-
-          case 20:
-            _context.next = 22;
-            return (0, _ut99query.queryUT99Server)(args[1], cachedDB);
-
-          case 22:
             _result = _context.sent;
 
-            message.channel.send(_result.status ? (0, _formats.printServerStatus)(_result) : _result.msg).catch(console.error + ':query:');
-            return _context.abrupt('break', 26);
+            _result.status ? updateCache(_result.cache) : '';
+            message.channel.send(_result.msg);
+            return _context.abrupt('break', 30);
 
-          case 25:
-            console.log('no match');
+          case 22:
+            console.log(args[0]);
+            return _context.abrupt('break', 30);
+
+          case 24:
+            _context.next = 26;
+            return (0, _ut99query.queryUT99Server)(args[1], cachedDB);
 
           case 26:
+            _result2 = _context.sent;
+
+            message.channel.send(_result2.status ? (0, _formats.printServerStatus)(_result2) : _result2.msg).catch(console.error + ':query:');
+            return _context.abrupt('break', 30);
+
+          case 29:
+            console.log('no match');
+
+          case 30:
           case 'end':
             return _context.stop();
         }
@@ -119,7 +131,7 @@ bot.on('message', function () {
         case 2:
           cachedDB = _context2.sent;
 
-          bot.login('MzkzMzM1NDU3MDA3NjY1MTUy.DrsR6g.yb9uY50QHZ7s51f5dzI_G9snPvw');
+          bot.login(process.env.DISCORD_BOT_TOKEN);
 
         case 4:
         case 'end':

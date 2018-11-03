@@ -49,15 +49,15 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
 var printServerList = exports.printServerList = function printServerList(cachedDB) {
   var richEmbed = new _discord2.default.RichEmbed();
 
-  var _Object$keys$reduce = (0, _keys2.default)(cachedDB).reduce(function (acc, curr, index) {
-    acc.desc += index + 1 + '\xA0\xA0\xA0' + cachedDB[curr].name + '\n';
+  var _cachedDB$reduce = cachedDB.reduce(function (acc, curr, index) {
+    acc.desc += '`' + (index + 1) + '`\xA0\xA0\xA0' + curr.name + '\n';
     return acc;
   }, {
     desc: ''
   }),
-      desc = _Object$keys$reduce.desc;
+      desc = _cachedDB$reduce.desc;
 
-  richEmbed.setTitle('IP Name');
+  richEmbed.setTitle('IP\xA0\xA0\xA0Name');
   richEmbed.setColor('#838282');
   richEmbed.setDescription(desc);
   richEmbed.setFooter('To query, type .q ip');

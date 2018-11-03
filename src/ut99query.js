@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep';
 import stringHash from 'string-hash';
 import API from './api';
 import {
@@ -6,6 +5,7 @@ import {
   createObjectFromArray,
   checkKeyExistenceFromIndex,
   getHostAndPortOfServerFromDB,
+  getUIDFromIndex,
 } from './helpers';
 
 export const addQueryServer = async ([_, hp, ...args], cachedDB) => {
@@ -24,15 +24,14 @@ export const addQueryServer = async ([_, hp, ...args], cachedDB) => {
     if (!host || !port || !name)
       return { status: false, msg: 'Invalid command' };
 
-    const clonedDB = typeof cachedDB !== 'object' ? {} : cloneDeep(cachedDB);
     const uid = stringHash(hp);
 
-    if (clonedDB.hasOwnProperty(uid))
+    if (cachedDB.some(s => parseInt(s.id) === parseInt(uid)))
       return { status: false, msg: 'Already exists' };
-    console.log('1');
-    clonedDB[uid] = { host, port, name, aliases };
 
-    const result = await API.updateDB(clonedDB);
+    const newServer = { host, port, name, aliases, timestamp: Date.now() };
+
+    const result = await API.pushToDB(uid, newServer);
     return result;
   } catch (error) {
     console.log(error);
@@ -40,7 +39,18 @@ export const addQueryServer = async ([_, hp, ...args], cachedDB) => {
   }
 };
 
-export const delQueryServer = () => {};
+export const delQueryServer = async ([_, index, ...args], cachedDB) => {
+  try {
+    const uid = getUIDFromIndex(cachedDB, parseInt(index));
+    if (!uid) return { status: false, msg: `Query server doesn't exist` };
+
+    const result = await API.deleteFromDB(uid);
+    return result;
+  } catch (error) {
+    console.log(error);
+    return { status: false, msg: 'Something went wrong' };
+  }
+};
 
 export const updateQueryServer = () => {};
 

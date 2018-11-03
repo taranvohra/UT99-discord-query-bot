@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPlayerList = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
+exports.getPlayerList = exports.createSortedDBSnapshot = exports.getUIDFromIndex = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
 
 var _values = require('babel-runtime/core-js/object/values');
 
@@ -13,9 +13,9 @@ var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _keys = require('babel-runtime/core-js/object/keys');
+var _extends2 = require('babel-runtime/helpers/extends');
 
-var _keys2 = _interopRequireDefault(_keys);
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _constants = require('./constants');
 
@@ -55,13 +55,24 @@ var createObjectFromArray = exports.createObjectFromArray = function createObjec
   }, {});
 };
 
-var checkKeyExistenceFromIndex = exports.checkKeyExistenceFromIndex = function checkKeyExistenceFromIndex(object, index) {
-  return !!(0, _keys2.default)(object)[index - 1];
+var checkKeyExistenceFromIndex = exports.checkKeyExistenceFromIndex = function checkKeyExistenceFromIndex(cachedDB, index) {
+  return !!cachedDB[index - 1];
 };
 
 var getHostAndPortOfServerFromDB = exports.getHostAndPortOfServerFromDB = function getHostAndPortOfServerFromDB(cachedDB, index) {
-  var server = (0, _keys2.default)(cachedDB)[index - 1];
-  return [cachedDB[server].host, cachedDB[server].port];
+  return [cachedDB[index - 1].host, cachedDB[index - 1].port];
+};
+
+var getUIDFromIndex = exports.getUIDFromIndex = function getUIDFromIndex(cachedDB, index) {
+  return cachedDB.length > 0 && cachedDB[index - 1].id || undefined;
+};
+
+var createSortedDBSnapshot = exports.createSortedDBSnapshot = function createSortedDBSnapshot(snapshot) {
+  var sortedSnapshot = [];
+  snapshot.forEach(function (child) {
+    sortedSnapshot.push((0, _extends3.default)({ id: child.key }, child.val()));
+  });
+  return sortedSnapshot;
 };
 
 /**

@@ -13,10 +13,6 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _typeof2 = require('babel-runtime/helpers/typeof');
-
-var _typeof3 = _interopRequireDefault(_typeof2);
-
 var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -28,10 +24,6 @@ var _toArray3 = _interopRequireDefault(_toArray2);
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-var _cloneDeep = require('lodash/cloneDeep');
-
-var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
 
 var _stringHash = require('string-hash');
 
@@ -52,7 +44,7 @@ var addQueryServer = exports.addQueryServer = function () {
         hp = _ref3[1],
         args = _ref3.slice(2);
 
-    var _hp$split, _hp$split2, host, port, _args$reduce, name, aliases, clonedDB, uid, result;
+    var _hp$split, _hp$split2, host, port, _args$reduce, name, aliases, uid, newServer, result;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -73,40 +65,39 @@ var addQueryServer = exports.addQueryServer = function () {
             return _context.abrupt('return', { status: false, msg: 'Invalid command' });
 
           case 5:
-            clonedDB = (typeof cachedDB === 'undefined' ? 'undefined' : (0, _typeof3.default)(cachedDB)) !== 'object' ? {} : (0, _cloneDeep2.default)(cachedDB);
             uid = (0, _stringHash2.default)(hp);
 
-            if (!clonedDB.hasOwnProperty(uid)) {
-              _context.next = 9;
+            if (!cachedDB.some(function (s) {
+              return parseInt(s.id) === parseInt(uid);
+            })) {
+              _context.next = 8;
               break;
             }
 
             return _context.abrupt('return', { status: false, msg: 'Already exists' });
 
-          case 9:
-            console.log('1');
-            clonedDB[uid] = { host: host, port: port, name: name, aliases: aliases };
+          case 8:
+            newServer = { host: host, port: port, name: name, aliases: aliases, timestamp: Date.now() };
+            _context.next = 11;
+            return _api2.default.pushToDB(uid, newServer);
 
-            _context.next = 13;
-            return _api2.default.updateDB(clonedDB);
-
-          case 13:
+          case 11:
             result = _context.sent;
             return _context.abrupt('return', result);
 
-          case 17:
-            _context.prev = 17;
+          case 15:
+            _context.prev = 15;
             _context.t0 = _context['catch'](0);
 
             console.log(_context.t0);
             return _context.abrupt('return', { status: false, msg: 'Something went wrong' });
 
-          case 21:
+          case 19:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[0, 17]]);
+    }, _callee, undefined, [[0, 15]]);
   }));
 
   return function addQueryServer(_x, _x2) {
@@ -114,34 +105,82 @@ var addQueryServer = exports.addQueryServer = function () {
   };
 }();
 
-var delQueryServer = exports.delQueryServer = function delQueryServer() {};
+var delQueryServer = exports.delQueryServer = function () {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref4, cachedDB) {
+    var _ref6 = (0, _toArray3.default)(_ref4),
+        _ = _ref6[0],
+        index = _ref6[1],
+        args = _ref6.slice(2);
 
-var updateQueryServer = exports.updateQueryServer = function updateQueryServer() {};
-
-var queryUT99Server = exports.queryUT99Server = function () {
-  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(args, cachedDB) {
-    var _ref5, _ref6, host, port, response, splittedResponse, filteredResult, result;
-
+    var uid, result;
     return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _ref5 = (0, _helpers.checkKeyExistenceFromIndex)(cachedDB, parseInt(args)) ? (0, _helpers.getHostAndPortOfServerFromDB)(cachedDB, parseInt(args)) : args.split(':'), _ref6 = (0, _slicedToArray3.default)(_ref5, 2), host = _ref6[0], port = _ref6[1];
+            _context2.prev = 0;
+            uid = (0, _helpers.getUIDFromIndex)(cachedDB, parseInt(index));
 
-            if (!(!host || !port)) {
-              _context2.next = 3;
+            if (uid) {
+              _context2.next = 4;
               break;
             }
 
-            return _context2.abrupt('return', { status: false, msg: 'Invalid' });
+            return _context2.abrupt('return', { status: false, msg: 'Query server doesn\'t exist' });
+
+          case 4:
+            _context2.next = 6;
+            return _api2.default.deleteFromDB(uid);
+
+          case 6:
+            result = _context2.sent;
+            return _context2.abrupt('return', result);
+
+          case 10:
+            _context2.prev = 10;
+            _context2.t0 = _context2['catch'](0);
+
+            console.log(_context2.t0);
+            return _context2.abrupt('return', { status: false, msg: 'Something went wrong' });
+
+          case 14:
+          case 'end':
+            return _context2.stop();
+        }
+      }
+    }, _callee2, undefined, [[0, 10]]);
+  }));
+
+  return function delQueryServer(_x3, _x4) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var updateQueryServer = exports.updateQueryServer = function updateQueryServer() {};
+
+var queryUT99Server = exports.queryUT99Server = function () {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(args, cachedDB) {
+    var _ref8, _ref9, host, port, response, splittedResponse, filteredResult, result;
+
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _ref8 = (0, _helpers.checkKeyExistenceFromIndex)(cachedDB, parseInt(args)) ? (0, _helpers.getHostAndPortOfServerFromDB)(cachedDB, parseInt(args)) : args.split(':'), _ref9 = (0, _slicedToArray3.default)(_ref8, 2), host = _ref9[0], port = _ref9[1];
+
+            if (!(!host || !port)) {
+              _context3.next = 3;
+              break;
+            }
+
+            return _context3.abrupt('return', { status: false, msg: 'Invalid' });
 
           case 3:
-            _context2.prev = 3;
-            _context2.next = 6;
+            _context3.prev = 3;
+            _context3.next = 6;
             return _api2.default.getUT99ServerStatus(host, parseInt(port) + 1);
 
           case 6:
-            response = _context2.sent;
+            response = _context3.sent;
             splittedResponse = response.split('\\');
             filteredResult = (0, _helpers.filterFalsyValues)(splittedResponse);
             result = filteredResult.reduce(function (acc, curr) {
@@ -153,26 +192,26 @@ var queryUT99Server = exports.queryUT99Server = function () {
               players: [],
               pFlag: false
             });
-            return _context2.abrupt('return', {
+            return _context3.abrupt('return', {
               status: true,
               info: (0, _extends3.default)({}, (0, _helpers.createObjectFromArray)(result.info), { host: host, port: port }),
               players: (0, _helpers.createObjectFromArray)(result.players)
             });
 
           case 13:
-            _context2.prev = 13;
-            _context2.t0 = _context2['catch'](3);
-            return _context2.abrupt('return', { status: false, msg: 'Could not query' });
+            _context3.prev = 13;
+            _context3.t0 = _context3['catch'](3);
+            return _context3.abrupt('return', { status: false, msg: 'Could not query' });
 
           case 16:
           case 'end':
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2, undefined, [[3, 13]]);
+    }, _callee3, undefined, [[3, 13]]);
   }));
 
-  return function queryUT99Server(_x3, _x4) {
-    return _ref4.apply(this, arguments);
+  return function queryUT99Server(_x5, _x6) {
+    return _ref7.apply(this, arguments);
   };
 }();
