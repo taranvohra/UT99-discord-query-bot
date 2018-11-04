@@ -1,5 +1,4 @@
 import Discord from 'discord.js';
-import utf8 from 'utf8';
 import { getPlayerList } from './helpers';
 import { teams } from './constants';
 
