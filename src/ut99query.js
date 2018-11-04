@@ -1,5 +1,6 @@
 import stringHash from 'string-hash';
 import API from './api';
+import util from 'util';
 import {
   filterFalsyValues,
   createObjectFromArray,
@@ -64,7 +65,9 @@ export const queryUT99Server = async (args, cachedDB) => {
   try {
     const response = await API.getUT99ServerStatus(host, parseInt(port) + 1);
     const splittedResponse = response.split('\\');
-    const filteredResult = filterFalsyValues(splittedResponse);
+    const filteredResult = [...splittedResponse];
+    filteredResult.shift();
+    filteredResult.unshift();
     const result = filteredResult.reduce(
       (acc, curr) => {
         if (curr === 'player_0') acc.pFlag = true;
@@ -83,6 +86,7 @@ export const queryUT99Server = async (args, cachedDB) => {
       players: createObjectFromArray(result.players),
     };
   } catch (error) {
+    console.log(error);
     return { status: false, msg: `Could not query` };
   }
 };

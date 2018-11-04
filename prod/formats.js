@@ -13,6 +13,10 @@ var _discord = require('discord.js');
 
 var _discord2 = _interopRequireDefault(_discord);
 
+var _utf = require('utf8');
+
+var _utf2 = _interopRequireDefault(_utf);
+
 var _helpers = require('./helpers');
 
 var _constants = require('./constants');
@@ -31,7 +35,7 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
   (0, _keys2.default)(playerList).forEach(function (team) {
     var p = playerList[team];
     var teamPlayers = p.reduce(function (acc, curr) {
-      acc = acc + curr + '\n';
+      acc = acc + curr + ' ' + '\n';
       return acc;
     }, '');
     p.length > 0 ? richEmbed.addField(team, teamPlayers, team !== _constants.teams.spec) : '';

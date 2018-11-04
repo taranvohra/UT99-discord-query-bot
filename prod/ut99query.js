@@ -9,6 +9,10 @@ var _extends2 = require('babel-runtime/helpers/extends');
 
 var _extends3 = _interopRequireDefault(_extends2);
 
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
 var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -32,6 +36,10 @@ var _stringHash2 = _interopRequireDefault(_stringHash);
 var _api = require('./api');
 
 var _api2 = _interopRequireDefault(_api);
+
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
 
 var _helpers = require('./helpers');
 
@@ -182,7 +190,10 @@ var queryUT99Server = exports.queryUT99Server = function () {
           case 6:
             response = _context3.sent;
             splittedResponse = response.split('\\');
-            filteredResult = (0, _helpers.filterFalsyValues)(splittedResponse);
+            filteredResult = [].concat((0, _toConsumableArray3.default)(splittedResponse));
+
+            filteredResult.shift();
+            filteredResult.unshift();
             result = filteredResult.reduce(function (acc, curr) {
               if (curr === 'player_0') acc.pFlag = true;
               acc.pFlag ? acc.players.push(curr) : acc.info.push(curr);
@@ -198,17 +209,19 @@ var queryUT99Server = exports.queryUT99Server = function () {
               players: (0, _helpers.createObjectFromArray)(result.players)
             });
 
-          case 13:
-            _context3.prev = 13;
+          case 15:
+            _context3.prev = 15;
             _context3.t0 = _context3['catch'](3);
+
+            console.log(_context3.t0);
             return _context3.abrupt('return', { status: false, msg: 'Could not query' });
 
-          case 16:
+          case 19:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, undefined, [[3, 13]]);
+    }, _callee3, undefined, [[3, 15]]);
   }));
 
   return function queryUT99Server(_x5, _x6) {

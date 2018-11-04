@@ -1,4 +1,5 @@
 import Discord from 'discord.js';
+import utf8 from 'utf8';
 import { getPlayerList } from './helpers';
 import { teams } from './constants';
 
@@ -17,7 +18,7 @@ export const printServerStatus = ({ info, players }) => {
   Object.keys(playerList).forEach(team => {
     const p = playerList[team];
     const teamPlayers = p.reduce((acc, curr) => {
-      acc = acc + curr + '\n';
+      acc = acc + curr + ' ' + '\n';
       return acc;
     }, '');
     p.length > 0

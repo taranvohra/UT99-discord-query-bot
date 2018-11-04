@@ -1,5 +1,6 @@
 import dgram from 'dgram';
 import db from './db';
+import util from 'util';
 import { checkIfFinalPacket, createSortedDBSnapshot } from './helpers';
 
 export default class API {
@@ -15,8 +16,10 @@ export default class API {
         });
 
         socket.on('message', (message, remote) => {
-          status += message.toString();
-          if (checkIfFinalPacket(message.toString())) {
+          const unicodeValues = message.toJSON().data;
+          const unicodeString = String.fromCharCode(...unicodeValues);
+          status += unicodeString;
+          if (checkIfFinalPacket(unicodeString)) {
             resolve(status);
             return socket.close();
           }

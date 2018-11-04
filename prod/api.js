@@ -12,6 +12,10 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -31,6 +35,10 @@ var _dgram2 = _interopRequireDefault(_dgram);
 var _db = require('./db');
 
 var _db2 = _interopRequireDefault(_db);
+
+var _util = require('util');
+
+var _util2 = _interopRequireDefault(_util);
 
 var _helpers = require('./helpers');
 
@@ -55,8 +63,10 @@ var API = function () {
           });
 
           socket.on('message', function (message, remote) {
-            status += message.toString();
-            if ((0, _helpers.checkIfFinalPacket)(message.toString())) {
+            var unicodeValues = message.toJSON().data;
+            var unicodeString = String.fromCharCode.apply(String, (0, _toConsumableArray3.default)(unicodeValues));
+            status += unicodeString;
+            if ((0, _helpers.checkIfFinalPacket)(unicodeString)) {
               resolve(status);
               return socket.close();
             }

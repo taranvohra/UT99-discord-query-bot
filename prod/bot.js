@@ -64,7 +64,7 @@ bot.on('message', function () {
             args = message.content.substring(_constants.prefix.length).split(' ');
             roles = message.member.roles;
             _context.t0 = args[0];
-            _context.next = _context.t0 === ((0, _helpers.checkIfRoleIsPrivileged)(roles) && _constants.commands.servers) ? 9 : _context.t0 === _constants.commands.addqueryserver ? 11 : _context.t0 === _constants.commands.delqueryserver ? 17 : _context.t0 === _constants.commands.updatequeryserver ? 23 : _context.t0 === _constants.commands.queryut99server ? 25 : 30;
+            _context.next = _context.t0 === _constants.commands.servers ? 9 : _context.t0 === ((0, _helpers.checkIfRoleIsPrivileged)(roles) && _constants.commands.addqueryserver) ? 11 : _context.t0 === ((0, _helpers.checkIfRoleIsPrivileged)(roles) && _constants.commands.delqueryserver) ? 17 : _context.t0 === ((0, _helpers.checkIfRoleIsPrivileged)(roles) && _constants.commands.updatequeryserver) ? 23 : _context.t0 === _constants.commands.queryut99server ? 25 : 30;
             break;
 
           case 9:
