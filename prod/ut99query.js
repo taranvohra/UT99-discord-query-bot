@@ -203,25 +203,27 @@ var queryUT99Server = exports.queryUT99Server = function () {
               players: [],
               pFlag: false
             });
+
+            console.log(_util2.default.inspect(filteredResult, { maxArrayLength: null }));
             return _context3.abrupt('return', {
               status: true,
               info: (0, _extends3.default)({}, (0, _helpers.createObjectFromArray)(result.info), { host: host, port: port }),
               players: (0, _helpers.createObjectFromArray)(result.players)
             });
 
-          case 15:
-            _context3.prev = 15;
+          case 16:
+            _context3.prev = 16;
             _context3.t0 = _context3['catch'](3);
 
             console.log(_context3.t0);
             return _context3.abrupt('return', { status: false, msg: 'Could not query' });
 
-          case 19:
+          case 20:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, undefined, [[3, 15]]);
+    }, _callee3, undefined, [[3, 16]]);
   }));
 
   return function queryUT99Server(_x5, _x6) {

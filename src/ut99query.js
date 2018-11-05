@@ -1,8 +1,6 @@
 import stringHash from 'string-hash';
 import API from './api';
-import util from 'util';
 import {
-  filterFalsyValues,
   createObjectFromArray,
   checkKeyExistenceFromIndex,
   getHostAndPortOfServerFromDB,
@@ -80,6 +78,7 @@ export const queryUT99Server = async (args, cachedDB) => {
         pFlag: false,
       }
     );
+
     return {
       status: true,
       info: { ...createObjectFromArray(result.info), host, port },

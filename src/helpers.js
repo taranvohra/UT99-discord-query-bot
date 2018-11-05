@@ -90,7 +90,6 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
     const playerName = players[`player_${i}`];
     if (players[`mesh_${i}`] === 'Spectator') {
       playerList[teams.spec].push(playerName);
-      i++;
       continue;
     }
 

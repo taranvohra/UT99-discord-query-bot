@@ -116,7 +116,6 @@ var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOf
     var playerName = players['player_' + i];
     if (players['mesh_' + i] === 'Spectator') {
       playerList[_constants.teams.spec].push(playerName);
-      i++;
       continue;
     }
 
