@@ -37,10 +37,6 @@ var _api = require('./api');
 
 var _api2 = _interopRequireDefault(_api);
 
-var _util = require('util');
-
-var _util2 = _interopRequireDefault(_util);
-
 var _helpers = require('./helpers');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -203,27 +199,25 @@ var queryUT99Server = exports.queryUT99Server = function () {
               players: [],
               pFlag: false
             });
-
-            console.log(_util2.default.inspect(filteredResult, { maxArrayLength: null }));
             return _context3.abrupt('return', {
               status: true,
               info: (0, _extends3.default)({}, (0, _helpers.createObjectFromArray)(result.info), { host: host, port: port }),
               players: (0, _helpers.createObjectFromArray)(result.players)
             });
 
-          case 16:
-            _context3.prev = 16;
+          case 15:
+            _context3.prev = 15;
             _context3.t0 = _context3['catch'](3);
 
             console.log(_context3.t0);
             return _context3.abrupt('return', { status: false, msg: 'Could not query' });
 
-          case 20:
+          case 19:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, undefined, [[3, 16]]);
+    }, _callee3, undefined, [[3, 15]]);
   }));
 
   return function queryUT99Server(_x5, _x6) {

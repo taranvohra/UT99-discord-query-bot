@@ -121,9 +121,15 @@ var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOf
 
     if (noOfTeams > 0) {
       var team = parseInt(players['team_' + i]);
-      playerList[(0, _values2.default)(_constants.teams)[team]].push(playerName);
+      playerList[(0, _values2.default)(_constants.teams)[team]].push(fixSpecialCharactersInName(playerName));
     } else playerList[_constants.teams.team_255].push(playerName);
   }
 
   return playerList;
+};
+
+var fixSpecialCharactersInName = function fixSpecialCharactersInName(name) {
+  return name.replace(/(\*|`)/g, function (c) {
+    return '\\' + c;
+  });
 };

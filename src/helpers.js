@@ -95,9 +95,11 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
 
     if (noOfTeams > 0) {
       const team = parseInt(players[`team_${i}`]);
-      playerList[Object.values(teams)[team]].push(playerName);
+      playerList[Object.values(teams)[team]].push(fixSpecialCharactersInName(playerName));
     } else playerList[teams.team_255].push(playerName);
   }
 
   return playerList;
 };
+
+const fixSpecialCharactersInName = name => name.replace(/(\*|`)/g, c => '\\' + c);

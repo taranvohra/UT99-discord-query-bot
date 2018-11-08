@@ -25,7 +25,7 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
 
   var richEmbed = new _discord2.default.RichEmbed();
   var desc = '**Map:** ' + info.mapname + ' \n **Players:** ' + info.numplayers + '/' + info.maxplayers + ' ';
-  console.log(players);
+
   var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
 
   (0, _keys2.default)(playerList).forEach(function (team) {
