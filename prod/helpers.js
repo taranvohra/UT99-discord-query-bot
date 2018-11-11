@@ -113,7 +113,7 @@ var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOf
   var playerList = (_playerList = {}, (0, _defineProperty3.default)(_playerList, _constants.teams.team_0, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_1, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_2, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_3, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_255, []), (0, _defineProperty3.default)(_playerList, _constants.teams.spec, []), _playerList);
 
   for (var i = 0; i < noOfPlayers; i++) {
-    var playerName = players['player_' + i];
+    var playerName = fixSpecialCharactersInName(players['player_' + i]);
     if (players['mesh_' + i] === 'Spectator') {
       playerList[_constants.teams.spec].push(playerName);
       continue;
@@ -121,7 +121,7 @@ var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOf
 
     if (noOfTeams > 0) {
       var team = parseInt(players['team_' + i]);
-      playerList[(0, _values2.default)(_constants.teams)[team]].push(fixSpecialCharactersInName(playerName));
+      playerList[(0, _values2.default)(_constants.teams)[team]].push(playerName);
     } else playerList[_constants.teams.team_255].push(playerName);
   }
 

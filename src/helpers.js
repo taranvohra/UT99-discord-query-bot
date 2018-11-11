@@ -87,7 +87,7 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
   };
 
   for (let i = 0; i < noOfPlayers; i++) {
-    const playerName = players[`player_${i}`];
+    const playerName = fixSpecialCharactersInName(players[`player_${i}`]);
     if (players[`mesh_${i}`] === 'Spectator') {
       playerList[teams.spec].push(playerName);
       continue;
@@ -95,7 +95,7 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
 
     if (noOfTeams > 0) {
       const team = parseInt(players[`team_${i}`]);
-      playerList[Object.values(teams)[team]].push(fixSpecialCharactersInName(playerName));
+      playerList[Object.values(teams)[team]].push(playerName);
     } else playerList[teams.team_255].push(playerName);
   }
 
