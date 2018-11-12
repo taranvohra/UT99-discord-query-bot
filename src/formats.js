@@ -47,7 +47,7 @@ export const printServerStatus = ({ info, players }) => {
     }, '');
     p.length > 0
       ? richEmbed.addField(
-          team + ' ' + (xServerQueryProps.teamScores[teamIndex] || ''),
+          team + ` | ` + (xServerQueryProps.teamScores[teamIndex] || ``),
           teamPlayers,
           team !== teams.spec
         )
@@ -57,7 +57,7 @@ export const printServerStatus = ({ info, players }) => {
   const desc =
     `**Map:** ${info.mapname} \n **Players:** ${info.numplayers}/${
       info.maxplayers
-    } \n ` + (xServerQueryProps.remainingTime || '');
+    } \n ` + (xServerQueryProps.remainingTime || ``);
   const footerText = `unreal://${info.host}:${info.port}`;
 
   richEmbed.setTitle(info.hostname);
