@@ -22,14 +22,14 @@ export const printServerStatus = ({ info, players }) => {
     xServerQueryProps.teamScores = Object.keys(teamScores).reduce(
       (acc, curr) => {
         const index = getTeamIndex(curr);
-        acc[index] = `Score - ${teamScores[curr]}`;
+        acc[index] = ` | Score - ${teamScores[curr]}`;
         return acc;
       },
       []
     );
-    xServerQueryProps.remainingTime = `**Remaining Time:** ${padNumberWithZero(
-      minutes
-    )}:${padNumberWithZero(seconds)} \n`;
+    xServerQueryProps.remainingTime = `${
+      minutes < info.timelimit ? '**Remaining Time:**' : '**Overtime**:'
+    } ${padNumberWithZero(minutes)}:${padNumberWithZero(seconds)} \n`;
   }
 
   const playerList = getPlayerList(
@@ -47,7 +47,7 @@ export const printServerStatus = ({ info, players }) => {
     }, '');
     p.length > 0
       ? richEmbed.addField(
-          team + ` | ` + (xServerQueryProps.teamScores[teamIndex] || ``),
+          team + (xServerQueryProps.teamScores[teamIndex] || ``),
           teamPlayers,
           team !== teams.spec
         )

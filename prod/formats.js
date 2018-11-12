@@ -36,10 +36,10 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
 
     xServerQueryProps.teamScores = (0, _keys2.default)(teamScores).reduce(function (acc, curr) {
       var index = (0, _helpers.getTeamIndex)(curr);
-      acc[index] = 'Score - ' + teamScores[curr];
+      acc[index] = ' | Score - ' + teamScores[curr];
       return acc;
     }, []);
-    xServerQueryProps.remainingTime = '**Remaining Time:** ' + (0, _helpers.padNumberWithZero)(minutes) + ':' + (0, _helpers.padNumberWithZero)(seconds) + ' \n';
+    xServerQueryProps.remainingTime = (minutes < info.timelimit ? '**Remaining Time:**' : '**Overtime**:') + ' ' + (0, _helpers.padNumberWithZero)(minutes) + ':' + (0, _helpers.padNumberWithZero)(seconds) + ' \n';
   }
 
   var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
@@ -51,7 +51,7 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
       acc = acc + curr + ' ' + '\n';
       return acc;
     }, '');
-    p.length > 0 ? richEmbed.addField(team + ' ' + (xServerQueryProps.teamScores[teamIndex] || ''), teamPlayers, team !== _constants.teams.spec) : '';
+    p.length > 0 ? richEmbed.addField(team + (xServerQueryProps.teamScores[teamIndex] || ''), teamPlayers, team !== _constants.teams.spec) : '';
   });
 
   var desc = '**Map:** ' + info.mapname + ' \n **Players:** ' + info.numplayers + '/' + info.maxplayers + ' \n ' + (xServerQueryProps.remainingTime || '');
