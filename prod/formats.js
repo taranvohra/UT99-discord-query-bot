@@ -23,20 +23,38 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
   var info = _ref.info,
       players = _ref.players;
 
+  var xServerQueryProps = {};
   var richEmbed = new _discord2.default.RichEmbed();
-  var desc = '**Map:** ' + info.mapname + ' \n **Players:** ' + info.numplayers + '/' + info.maxplayers + ' ';
+
+  // If XServerQuery response, then some more coooooooooool stuff
+  if (info['xserverquery']) {
+    var _getMinutesAndSeconds = (0, _helpers.getMinutesAndSeconds)(parseInt(info['remainingtime'])),
+        minutes = _getMinutesAndSeconds.minutes,
+        seconds = _getMinutesAndSeconds.seconds;
+
+    var teamScores = (0, _helpers.getTeamScores)(info, info.maxteams);
+
+    xServerQueryProps.teamScores = (0, _keys2.default)(teamScores).reduce(function (acc, curr) {
+      var index = (0, _helpers.getTeamIndex)(curr);
+      acc[index] = 'Score - ' + teamScores[curr];
+      return acc;
+    }, []);
+    xServerQueryProps.remainingTime = '**Remaining Time:** ' + (0, _helpers.padNumberWithZero)(minutes) + ':' + (0, _helpers.padNumberWithZero)(seconds) + ' \n';
+  }
 
   var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
 
   (0, _keys2.default)(playerList).forEach(function (team) {
+    var teamIndex = (0, _helpers.getTeamIndex)(team);
     var p = playerList[team];
     var teamPlayers = p.reduce(function (acc, curr) {
       acc = acc + curr + ' ' + '\n';
       return acc;
     }, '');
-    p.length > 0 ? richEmbed.addField(team, teamPlayers, team !== _constants.teams.spec) : '';
+    p.length > 0 ? richEmbed.addField(team + ' ' + (xServerQueryProps.teamScores[teamIndex] || ''), teamPlayers, team !== _constants.teams.spec) : '';
   });
 
+  var desc = '**Map:** ' + info.mapname + ' \n **Players:** ' + info.numplayers + '/' + info.maxplayers + ' \n ' + (xServerQueryProps.remainingTime || '');
   var footerText = 'unreal://' + info.host + ':' + info.port;
 
   richEmbed.setTitle(info.hostname);

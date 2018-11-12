@@ -68,7 +68,7 @@ export const queryUT99Server = async (args, cachedDB) => {
     filteredResult.unshift();
     const result = filteredResult.reduce(
       (acc, curr) => {
-        if (curr === 'player_0') acc.pFlag = true;
+        if (curr === 'player_0' || curr === 'Player_0') acc.pFlag = true;
         acc.pFlag ? acc.players.push(curr) : acc.info.push(curr);
         return acc;
       },

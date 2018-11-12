@@ -9,7 +9,7 @@ export default class API {
       try {
         let status = '';
         const socket = dgram.createSocket('udp4');
-        const datagram = '\\status\\';
+        const datagram = '\\status\\XServerQuery';
 
         socket.send(datagram, port, host, err => {
           if (err) reject(err);

@@ -191,7 +191,7 @@ var queryUT99Server = exports.queryUT99Server = function () {
             filteredResult.shift();
             filteredResult.unshift();
             result = filteredResult.reduce(function (acc, curr) {
-              if (curr === 'player_0') acc.pFlag = true;
+              if (curr === 'player_0' || curr === 'Player_0') acc.pFlag = true;
               acc.pFlag ? acc.players.push(curr) : acc.info.push(curr);
               return acc;
             }, {

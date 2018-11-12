@@ -1,12 +1,36 @@
 import Discord from 'discord.js';
-import { getPlayerList } from './helpers';
+import {
+  getPlayerList,
+  getMinutesAndSeconds,
+  padNumberWithZero,
+  getTeamScores,
+  getTeamIndex,
+} from './helpers';
 import { teams } from './constants';
 
 export const printServerStatus = ({ info, players }) => {
+  const xServerQueryProps = {};
   let richEmbed = new Discord.RichEmbed();
-  const desc = `**Map:** ${info.mapname} \n **Players:** ${info.numplayers}/${
-    info.maxplayers
-  } `;
+
+  // If XServerQuery response, then some more coooooooooool stuff
+  if (info['xserverquery']) {
+    const { minutes, seconds } = getMinutesAndSeconds(
+      parseInt(info['remainingtime'])
+    );
+    const teamScores = getTeamScores(info, info.maxteams);
+
+    xServerQueryProps.teamScores = Object.keys(teamScores).reduce(
+      (acc, curr) => {
+        const index = getTeamIndex(curr);
+        acc[index] = `Score - ${teamScores[curr]}`;
+        return acc;
+      },
+      []
+    );
+    xServerQueryProps.remainingTime = `**Remaining Time:** ${padNumberWithZero(
+      minutes
+    )}:${padNumberWithZero(seconds)} \n`;
+  }
 
   const playerList = getPlayerList(
     players,
@@ -15,16 +39,25 @@ export const printServerStatus = ({ info, players }) => {
   );
 
   Object.keys(playerList).forEach(team => {
+    const teamIndex = getTeamIndex(team);
     const p = playerList[team];
     const teamPlayers = p.reduce((acc, curr) => {
       acc = acc + curr + ' ' + '\n';
       return acc;
     }, '');
     p.length > 0
-      ? richEmbed.addField(team, teamPlayers, team !== teams.spec)
+      ? richEmbed.addField(
+          team + ' ' + (xServerQueryProps.teamScores[teamIndex] || ''),
+          teamPlayers,
+          team !== teams.spec
+        )
       : '';
   });
 
+  const desc =
+    `**Map:** ${info.mapname} \n **Players:** ${info.numplayers}/${
+      info.maxplayers
+    } \n ` + (xServerQueryProps.remainingTime || '');
   const footerText = `unreal://${info.host}:${info.port}`;
 
   richEmbed.setTitle(info.hostname);

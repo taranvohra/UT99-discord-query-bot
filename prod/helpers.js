@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPlayerList = exports.checkIfRoleIsPrivileged = exports.createSortedDBSnapshot = exports.getUIDFromIndex = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
+exports.getTeamIndex = exports.getMinutesAndSeconds = exports.padNumberWithZero = exports.getTeamScores = exports.getPlayerList = exports.checkIfRoleIsPrivileged = exports.createSortedDBSnapshot = exports.getUIDFromIndex = exports.getHostAndPortOfServerFromDB = exports.checkKeyExistenceFromIndex = exports.createObjectFromArray = exports.filterFalsyValues = exports.checkIfFinalPacket = undefined;
 
 var _values = require('babel-runtime/core-js/object/values');
 
@@ -50,7 +50,7 @@ var filterFalsyValues = exports.filterFalsyValues = function filterFalsyValues(a
  */
 var createObjectFromArray = exports.createObjectFromArray = function createObjectFromArray(array) {
   return array.reduce(function (acc, item, index, arr) {
-    if (index % 2 === 0) acc[item] = arr[index + 1];
+    if (index % 2 === 0) acc[item.toLowerCase()] = arr[index + 1];
     return acc;
   }, {});
 };
@@ -124,12 +124,41 @@ var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOf
       playerList[(0, _values2.default)(_constants.teams)[team]].push(playerName);
     } else playerList[_constants.teams.team_255].push(playerName);
   }
-
   return playerList;
+};
+
+var getTeamScores = exports.getTeamScores = function getTeamScores(info, maxTeams) {
+  var _teamScores;
+
+  var teamScores = (_teamScores = {}, (0, _defineProperty3.default)(_teamScores, _constants.teams.team_0, []), (0, _defineProperty3.default)(_teamScores, _constants.teams.team_1, []), (0, _defineProperty3.default)(_teamScores, _constants.teams.team_2, []), (0, _defineProperty3.default)(_teamScores, _constants.teams.team_3, []), _teamScores);
+
+  for (var i = 0; i < maxTeams; i++) {
+    teamScores[(0, _values2.default)(_constants.teams)[i]] = info['teamscore_' + i];
+  }
+  return teamScores;
 };
 
 var fixSpecialCharactersInName = function fixSpecialCharactersInName(name) {
   return name.replace(/(\*|`)/g, function (c) {
     return '\\' + c;
+  });
+};
+
+var padNumberWithZero = exports.padNumberWithZero = function padNumberWithZero(number) {
+  return number > -1 && number < 10 ? '0' + number : '' + number;
+};
+
+var getMinutesAndSeconds = exports.getMinutesAndSeconds = function getMinutesAndSeconds(time) {
+  var seconds = time % 60;
+  var minutes = (time - seconds) / 60;
+  return {
+    seconds: seconds,
+    minutes: minutes
+  };
+};
+
+var getTeamIndex = exports.getTeamIndex = function getTeamIndex(teamName) {
+  return (0, _values2.default)(_constants.teams).findIndex(function (t) {
+    return t === teamName;
   });
 };

@@ -25,7 +25,7 @@ export const filterFalsyValues = array => array.filter(v => Boolean(v));
  */
 export const createObjectFromArray = array => {
   return array.reduce((acc, item, index, arr) => {
-    if (index % 2 === 0) acc[item] = arr[index + 1];
+    if (index % 2 === 0) acc[item.toLowerCase()] = arr[index + 1];
     return acc;
   }, {});
 };
@@ -98,8 +98,37 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
       playerList[Object.values(teams)[team]].push(playerName);
     } else playerList[teams.team_255].push(playerName);
   }
-
   return playerList;
 };
 
-const fixSpecialCharactersInName = name => name.replace(/(\*|`)/g, c => '\\' + c);
+export const getTeamScores = (info, maxTeams) => {
+  let teamScores = {
+    [teams.team_0]: [],
+    [teams.team_1]: [],
+    [teams.team_2]: [],
+    [teams.team_3]: [],
+  };
+
+  for (let i = 0; i < maxTeams; i++) {
+    teamScores[Object.values(teams)[i]] = info[`teamscore_${i}`];
+  }
+  return teamScores;
+};
+
+const fixSpecialCharactersInName = name =>
+  name.replace(/(\*|`)/g, c => '\\' + c);
+
+export const padNumberWithZero = number =>
+  number > -1 && number < 10 ? `0${number}` : `${number}`;
+
+export const getMinutesAndSeconds = time => {
+  const seconds = time % 60;
+  const minutes = (time - seconds) / 60;
+  return {
+    seconds,
+    minutes,
+  };
+};
+
+export const getTeamIndex = teamName =>
+  Object.values(teams).findIndex(t => t === teamName);

@@ -56,7 +56,7 @@ var API = function () {
         try {
           var status = '';
           var socket = _dgram2.default.createSocket('udp4');
-          var datagram = '\\status\\';
+          var datagram = '\\status\\XServerQuery';
 
           socket.send(datagram, port, host, function (err) {
             if (err) reject(err);
