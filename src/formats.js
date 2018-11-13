@@ -9,8 +9,14 @@ import {
 import { teams } from './constants';
 
 export const printServerStatus = ({ info, players }) => {
-  const xServerQueryProps = {};
   let richEmbed = new Discord.RichEmbed();
+
+  const xServerQueryProps = { remainingTime: null, teamScores: {} };
+  const playerList = getPlayerList(
+    players,
+    parseInt(info.numplayers) || 0,
+    !!info.maxteams
+  );
 
   // If XServerQuery response, then some more coooooooooool stuff
   if (info['xserverquery']) {
@@ -19,6 +25,12 @@ export const printServerStatus = ({ info, players }) => {
     );
     const teamScores = getTeamScores(info, info.maxteams);
 
+    xServerQueryProps.remainingTime = `${
+      (minutes === parseInt(info.timelimit) && seconds === 0) ||
+      minutes < parseInt(info.timelimit)
+        ? '**Remaining Time:**'
+        : '**Overtime**:'
+    } ${padNumberWithZero(minutes)}:${padNumberWithZero(seconds)} \n`;
     xServerQueryProps.teamScores = Object.keys(teamScores).reduce(
       (acc, curr) => {
         const index = getTeamIndex(curr);
@@ -27,16 +39,7 @@ export const printServerStatus = ({ info, players }) => {
       },
       []
     );
-    xServerQueryProps.remainingTime = `${
-      minutes < info.timelimit ? '**Remaining Time:**' : '**Overtime**:'
-    } ${padNumberWithZero(minutes)}:${padNumberWithZero(seconds)} \n`;
   }
-
-  const playerList = getPlayerList(
-    players,
-    parseInt(info.numplayers) || 0,
-    !!info.maxteams
-  );
 
   Object.keys(playerList).forEach(team => {
     const teamIndex = getTeamIndex(team);

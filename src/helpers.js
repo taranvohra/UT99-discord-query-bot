@@ -87,7 +87,11 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
   };
 
   for (let i = 0; i < noOfPlayers; i++) {
-    const playerName = fixSpecialCharactersInName(players[`player_${i}`]);
+    const flag = players[`countryc_${i}`]
+      ? `:flag_${players[`countryc_${i}`]}:`
+      : '';
+    const playerName =
+      flag + ' ' + fixSpecialCharactersInName(players[`player_${i}`]);
     if (players[`mesh_${i}`] === 'Spectator') {
       playerList[teams.spec].push(playerName);
       continue;

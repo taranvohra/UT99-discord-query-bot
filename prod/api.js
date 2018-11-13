@@ -68,7 +68,6 @@ var API = function () {
             status += unicodeString;
             if ((0, _helpers.checkIfFinalPacket)(unicodeString)) {
               resolve(status);
-              console.log(status);
               return socket.close();
             }
           });

@@ -23,8 +23,10 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
   var info = _ref.info,
       players = _ref.players;
 
-  var xServerQueryProps = {};
   var richEmbed = new _discord2.default.RichEmbed();
+  var xServerQueryProps = { remainingTime: null, teamScores: {} };
+
+  var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
 
   // If XServerQuery response, then some more coooooooooool stuff
   if (info['xserverquery']) {
@@ -34,15 +36,13 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
 
     var teamScores = (0, _helpers.getTeamScores)(info, info.maxteams);
 
+    xServerQueryProps.remainingTime = (minutes === parseInt(info.timelimit) && seconds === 0 || minutes < parseInt(info.timelimit) ? '**Remaining Time:**' : '**Overtime**:') + ' ' + (0, _helpers.padNumberWithZero)(minutes) + ':' + (0, _helpers.padNumberWithZero)(seconds) + ' \n';
     xServerQueryProps.teamScores = (0, _keys2.default)(teamScores).reduce(function (acc, curr) {
       var index = (0, _helpers.getTeamIndex)(curr);
       acc[index] = ' | Score - ' + teamScores[curr];
       return acc;
     }, []);
-    xServerQueryProps.remainingTime = (minutes < info.timelimit ? '**Remaining Time:**' : '**Overtime**:') + ' ' + (0, _helpers.padNumberWithZero)(minutes) + ':' + (0, _helpers.padNumberWithZero)(seconds) + ' \n';
   }
-
-  var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
 
   (0, _keys2.default)(playerList).forEach(function (team) {
     var teamIndex = (0, _helpers.getTeamIndex)(team);
