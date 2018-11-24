@@ -13,7 +13,7 @@ export const teams = {
   team_1: 'Blue Team',
   team_2: 'Green Team',
   team_3: 'Gold Team',
-  team_255: 'None',
+  team_255: 'Players',
   spec: 'Spectators',
 };
 

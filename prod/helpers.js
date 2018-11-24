@@ -113,8 +113,9 @@ var getPlayerList = exports.getPlayerList = function getPlayerList(players, noOf
   var playerList = (_playerList = {}, (0, _defineProperty3.default)(_playerList, _constants.teams.team_0, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_1, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_2, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_3, []), (0, _defineProperty3.default)(_playerList, _constants.teams.team_255, []), (0, _defineProperty3.default)(_playerList, _constants.teams.spec, []), _playerList);
 
   for (var i = 0; i < noOfPlayers; i++) {
-    var flag = players['countryc_' + i] ? ':flag_' + players['countryc_' + i] + ':' : '';
-    var playerName = flag + ' ' + fixSpecialCharactersInName(players['player_' + i]);
+    var cFlag = !!players['countryc_' + i] && players['countryc_' + i] ? ':flag_' + players['countryc_' + i] + ':' : ':flag_white:';
+
+    var playerName = cFlag + ' ' + fixSpecialCharactersInName(players['player_' + i]);
     if (players['mesh_' + i] === 'Spectator') {
       playerList[_constants.teams.spec].push(playerName);
       continue;
@@ -140,7 +141,7 @@ var getTeamScores = exports.getTeamScores = function getTeamScores(info, maxTeam
 };
 
 var fixSpecialCharactersInName = function fixSpecialCharactersInName(name) {
-  return name.replace(/(\*|`)/g, function (c) {
+  return name.replace(/(\*|`|:)/g, function (c) {
     return '\\' + c;
   });
 };

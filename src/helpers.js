@@ -87,11 +87,13 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
   };
 
   for (let i = 0; i < noOfPlayers; i++) {
-    const flag = players[`countryc_${i}`]
-      ? `:flag_${players[`countryc_${i}`]}:`
-      : '';
+    const cFlag =
+      !!players[`countryc_${i}`] && players[`countryc_${i}`]
+        ? `:flag_${players[`countryc_${i}`]}:`
+        : `:flag_white:`;
+
     const playerName =
-      flag + ' ' + fixSpecialCharactersInName(players[`player_${i}`]);
+      cFlag + ' ' + fixSpecialCharactersInName(players[`player_${i}`]);
     if (players[`mesh_${i}`] === 'Spectator') {
       playerList[teams.spec].push(playerName);
       continue;
@@ -120,7 +122,7 @@ export const getTeamScores = (info, maxTeams) => {
 };
 
 const fixSpecialCharactersInName = name =>
-  name.replace(/(\*|`)/g, c => '\\' + c);
+  name.replace(/(\*|`|:)/g, c => '\\' + c);
 
 export const padNumberWithZero = number =>
   number > -1 && number < 10 ? `0${number}` : `${number}`;

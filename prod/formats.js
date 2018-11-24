@@ -24,8 +24,8 @@ var printServerStatus = exports.printServerStatus = function printServerStatus(_
       players = _ref.players;
 
   var richEmbed = new _discord2.default.RichEmbed();
-  var xServerQueryProps = { remainingTime: null, teamScores: {} };
 
+  var xServerQueryProps = { remainingTime: null, teamScores: {} };
   var playerList = (0, _helpers.getPlayerList)(players, parseInt(info.numplayers) || 0, !!info.maxteams);
 
   // If XServerQuery response, then some more coooooooooool stuff
