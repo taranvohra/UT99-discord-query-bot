@@ -88,7 +88,7 @@ export const getPlayerList = (players, noOfPlayers, noOfTeams) => {
 
   for (let i = 0; i < noOfPlayers; i++) {
     const cFlag =
-      !!players[`countryc_${i}`] && players[`countryc_${i}`]
+      !!players[`countryc_${i}`] && players[`countryc_${i}`] !== 'none'
         ? `:flag_${players[`countryc_${i}`]}:`
         : `:flag_white:`;
 
